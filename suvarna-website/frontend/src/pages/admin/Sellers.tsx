@@ -39,19 +39,15 @@ export default function Sellers() {
     setShowForm(true);
   };
 
-  const handleDelete = (seller: Seller) => {
-    setDeletingSeller(seller);
-  };
-
-  const confirmDelete = async () => {
-    if (!deletingSeller) return;
-    try {
-      await deleteSeller(deletingSeller.id);
-      await loadSellers();
-      setDeletingSeller(null);
-    } catch (error) {
-      console.error('Failed to delete seller:', error);
-      alert('Failed to delete seller. Please try again.');
+  const handleDelete = async (seller: Seller) => {
+    if (window.confirm(`Are you sure you want to delete ${seller.companyName}?`)) {
+      try {
+        await deleteSeller(seller.id);
+        await loadSellers();
+      } catch (error) {
+        console.error('Failed to delete seller:', error);
+        alert('Failed to delete seller. Please try again.');
+      }
     }
   };
 

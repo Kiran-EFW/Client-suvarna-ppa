@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import {
   ArrowRight,
   Zap,
@@ -14,9 +14,7 @@ import {
   DollarSign,
   Shield,
   CheckCircle2,
-  Users,
   Factory,
-  BarChart3,
   Mail,
   Phone,
   MapPin,

@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx prisma generate)",
+      "Bash(npx prisma generate --schema=./prisma/schema.prisma)",
+      "Bash(npx prisma --version)",
+      "Bash(dir node_modules@prisma)",
+      "Bash(dir node_modulesprisma)",
+      "Bash(test -f \"node_modules/.prisma/client/index.js\")",
+      "Bash(npm start)",
+      "Bash(npx prisma generate --schema=./prisma/schema.prisma --debug)",
+      "Bash(node node_modules/prisma/build/index.js generate)",
+      "Bash(rm -rf node_modules/.prisma)",
+      "Bash(cat node_modules/.prisma/client/index.js)",
+      "Bash(npm uninstall prisma @prisma/client)",
+      "Bash(npm install prisma@latest @prisma/client@latest)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
