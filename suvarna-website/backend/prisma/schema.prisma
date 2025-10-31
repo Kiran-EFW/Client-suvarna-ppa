@@ -1,0 +1,200 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native"]
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  passwordHash  String
+  companyName   String
+  firstName     String
+  lastName      String
+  location      String
+  state         String
+  mobile        String
+  createdAt     DateTime  @default(now())
+  matches       Match[]
+  termsAgreements TermsAgreement[]
+}
+
+model Seller {
+  id              String   @id @default(uuid())
+  companyName     String
+  contactPerson   String
+  contactEmail    String
+  contactPhone    String
+  projectType     String   // Solar, Wind, Hybrid
+  capacity        Float    // in MW
+  location        String
+  state           String
+  askingPrice     Float
+  status          String   @default("active")
+  createdAt       DateTime @default(now())
+  matches         Match[]
+}
+
+model Match {
+  id              String   @id @default(uuid())
+  userId          String
+  sellerId        String
+  status          String   @default("matched") // matched, terms_agreed, completed
+  matchedAt       DateTime @default(now())
+  user            User     @relation(fields: [userId], references: [id])
+  seller          Seller   @relation(fields: [sellerId], references: [id])
+  termsAgreement  TermsAgreement?
+}
+
+model TermsAgreement {
+  id          String   @id @default(uuid())
+  matchId     String   @unique
+  userId      String
+  agreedAt    DateTime @default(now())
+  ipAddress   String
+  match       Match    @relation(fields: [matchId], references: [id])
+  user        User     @relation(fields: [userId], references: [id])
+}
+
+// CRM Models
+
+// Employee/Staff Management
+model Employee {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  passwordHash  String
+  firstName     String
+  lastName      String
+  role          String    // super_admin, manager, agent
+  phone         String?
+  active        Boolean   @default(true)
+  managerId     String?   // For hierarchical structure
+  manager       Employee? @relation("ManagerToAgents", fields: [managerId], references: [id])
+  agents        Employee[] @relation("ManagerToAgents")
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  assignedLeads Lead[]    @relation("AssignedTo")
+  activities    Activity[]
+  createdLeads  Lead[]    @relation("CreatedBy")
+  tasks         Task[]
+  documents     Document[]
+}
+
+// Lead Management
+model Lead {
+  id              String    @id @default(uuid())
+  // Company Information
+  companyName     String
+  location        String
+  state           String
+  creditRating    String?
+  website          String?
+  annualConsumption Float?    // in kWh
+  industry         String?
+  companySize      String?
+  
+  // Contact Information
+  firstName       String
+  lastName        String
+  designation     String?
+  mobile1         String
+  mobile2         String?
+  landline        String?
+  landline2       String?
+  email1          String
+  email2          String?
+  
+  // CRM Fields
+  status          String    @default("new") // new, contacted, meeting_scheduled, proposal_sent, negotiation, won, lost
+  priority        String    @default("medium") // high, medium, low
+  source          String    @default("website") // website, marketplace, referral, cold_call
+  remarks         String?
+  estimatedValue  Float?
+  
+  // Relationships
+  assignedToId    String?
+  assignedTo      Employee? @relation("AssignedTo", fields: [assignedToId], references: [id])
+  createdById     String?
+  createdBy       Employee? @relation("CreatedBy", fields: [createdById], references: [id])
+  
+  // Timestamps
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  lastContactedAt DateTime?
+  
+  // Relations
+  activities      Activity[]
+  tasks           Task[]
+  documents       Document[]
+}
+
+// Activity Tracking
+model Activity {
+  id          String    @id @default(uuid())
+  leadId      String
+  lead        Lead      @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  employeeId  String
+  employee    Employee  @relation(fields: [employeeId], references: [id])
+  
+  type        String    // call, email, meeting, note, status_change
+  subject     String?
+  description String?
+  outcome     String?
+  duration    Int?      // in minutes
+  nextFollowUp DateTime?
+  rating      Int?      // 1-5
+  
+  createdAt   DateTime  @default(now())
+  
+  @@index([leadId])
+  @@index([employeeId])
+}
+
+// Task Management
+model Task {
+  id          String    @id @default(uuid())
+  leadId      String
+  lead        Lead      @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  assignedToId String
+  assignedTo   Employee @relation(fields: [assignedToId], references: [id])
+  
+  title       String
+  description String?
+  priority    String    @default("medium")
+  status      String    @default("pending") // pending, completed, cancelled
+  dueDate     DateTime?
+  
+  createdAt   DateTime  @default(now())
+  completedAt DateTime?
+  
+  @@index([leadId])
+  @@index([assignedToId])
+}
+
+// Document Storage
+model Document {
+  id          String    @id @default(uuid())
+  leadId      String
+  lead        Lead      @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  
+  name        String
+  type        String    // proposal, contract, presentation, etc.
+  fileUrl     String
+  fileSize    Int
+  mimeType    String
+  
+  uploadedById String
+  uploadedBy   Employee @relation(fields: [uploadedById], references: [id])
+  
+  createdAt   DateTime  @default(now())
+  
+  @@index([leadId])
+}
