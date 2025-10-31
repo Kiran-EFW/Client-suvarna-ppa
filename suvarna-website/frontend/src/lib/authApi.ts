@@ -1,12 +1,5 @@
 import { getApiPath } from './apiConfig';
 
-const getApiBaseUrl = (): string => {
-  if (import.meta.env.PROD) {
-    return '';
-  }
-  return import.meta.env.VITE_APP_BACKEND_API_URL || 'http://localhost:8000';
-};
-
 export interface RegisterData {
   email: string;
   password: string;
