@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Briefcase, AlertCircle, Settings, ListTodo, BarChart3 } from 'lucide-react';
 import { getCurrentEmployee } from '@/lib/authApi';
 
-const API_BASE_URL = import.meta.env.VITE_APP_BACKEND_API_URL || 'http://localhost:8000';
+import { getApiPath } from '@/lib/apiConfig';
 
 interface Stats {
   totalLeads: number;
@@ -34,7 +34,7 @@ export default function CRMDashboard() {
         setEmployee(empData);
 
         // Get stats
-        const response = await fetch(`${API_BASE_URL}/api/crm/leads/stats`, {
+        const response = await fetch(getApiPath('/api/crm/leads/stats'), {
           credentials: 'include'
         });
         if (response.ok) {

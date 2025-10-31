@@ -19,7 +19,7 @@ import { Search, Table } from 'lucide-react';
 // import { getCurrentEmployee } from '@/lib/authApi';
 // import { format } from 'date-fns';
 
-const API_BASE_URL = import.meta.env.VITE_APP_BACKEND_API_URL || 'http://localhost:8000';
+import { getApiPath } from '@/lib/apiConfig';
 
 interface Lead {
   id: string;
@@ -86,7 +86,7 @@ export default function KanbanView() {
         params.append('priority', priorityFilter);
       }
 
-      const response = await fetch(`${API_BASE_URL}/api/crm/leads?${params}`, {
+      const response = await fetch(getApiPath(`/api/crm/leads?${params}`), {
         credentials: 'include',
       });
 
@@ -127,7 +127,7 @@ export default function KanbanView() {
 
     // Update on server
     try {
-      const response = await fetch(`${API_BASE_URL}/api/crm/leads/${leadId}/status`, {
+      const response = await fetch(getApiPath(`/api/crm/leads/${leadId}/status`), {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+import { getApiPath } from './apiConfig';
 
 export interface LeadFormData {
   companyName: string;
@@ -19,7 +19,7 @@ export interface LeadFormData {
 }
 
 export const submitLeadToCRM = async (formData: LeadFormData) => {
-  const response = await fetch(`${API_URL}/leads`, {
+  const response = await fetch(getApiPath('/api/leads'), {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

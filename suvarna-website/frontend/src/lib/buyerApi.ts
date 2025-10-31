@@ -1,4 +1,4 @@
-const API_BASE_URL = import.meta.env.VITE_APP_BACKEND_API_URL || 'http://localhost:8000';
+import { getApiPath } from './apiConfig';
 
 export interface MaskedSeller {
   id: string;
@@ -52,7 +52,7 @@ export interface SellerResponse {
 }
 
 export async function getMatches(): Promise<Match[]> {
-  const response = await fetch(`${API_BASE_URL}/api/buyer/matches`, {
+  const response = await fetch(getApiPath('/api/buyer/matches'), {
     method: 'GET',
     credentials: 'include',
   });
@@ -66,7 +66,7 @@ export async function getMatches(): Promise<Match[]> {
 }
 
 export async function agreeToTerms(matchId: string): Promise<SellerDetails> {
-  const response = await fetch(`${API_BASE_URL}/api/buyer/terms/${matchId}`, {
+  const response = await fetch(getApiPath(`/api/buyer/terms/${matchId}`), {
     method: 'POST',
     credentials: 'include',
   });
@@ -81,7 +81,7 @@ export async function agreeToTerms(matchId: string): Promise<SellerDetails> {
 }
 
 export async function getSellerDetails(matchId: string): Promise<SellerDetails> {
-  const response = await fetch(`${API_BASE_URL}/api/buyer/seller/${matchId}`, {
+  const response = await fetch(getApiPath(`/api/buyer/seller/${matchId}`), {
     method: 'GET',
     credentials: 'include',
   });

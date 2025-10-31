@@ -7,7 +7,7 @@ import { BarChart3, TrendingUp, Users, DollarSign, Download } from 'lucide-react
 import { getCurrentEmployee } from '@/lib/authApi';
 // import { format, subDays, startOfMonth, endOfMonth } from 'date-fns';
 
-const API_BASE_URL = import.meta.env.VITE_APP_BACKEND_API_URL || 'http://localhost:8000';
+import { getApiPath } from '@/lib/apiConfig';
 
 interface ReportData {
   totalLeads: number;
@@ -56,7 +56,7 @@ export default function Reports() {
       };
 
       // Try to get real stats
-      const response = await fetch(`${API_BASE_URL}/api/crm/leads/stats`, {
+      const response = await fetch(getApiPath('/api/crm/leads/stats'), {
         credentials: 'include',
       });
 

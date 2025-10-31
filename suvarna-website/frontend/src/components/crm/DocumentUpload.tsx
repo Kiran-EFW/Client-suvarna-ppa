@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Upload, File, Download, Trash2 } from 'lucide-react';
 import { format } from 'date-fns';
 
-const API_BASE_URL = import.meta.env.VITE_APP_BACKEND_API_URL || 'http://localhost:8000';
+import { getApiPath } from '@/lib/apiConfig';
 
 interface CrmDocument {
   id: string;
@@ -55,7 +55,7 @@ export default function DocumentUpload({ leadId, documents, onDocumentAdded, onD
       formData.append('file', file);
       formData.append('type', uploadType);
 
-      const response = await fetch(`${API_BASE_URL}/api/crm/leads/${leadId}/documents`, {
+      const response = await fetch(getApiPath(`/api/crm/leads/${leadId}/documents`), {
         method: 'POST',
         credentials: 'include',
         body: formData,
@@ -79,7 +79,7 @@ export default function DocumentUpload({ leadId, documents, onDocumentAdded, onD
 
   const handleDownload = (document: CrmDocument) => {
     // Prefer stable backend download endpoint
-    window.open(`${API_BASE_URL}/api/crm/documents/${document.id}`, '_blank');
+    window.open(getApiPath(`/api/crm/documents/${document.id}`), '_blank');
   };
 
   const handleDelete = async (docId: string) => {
@@ -88,7 +88,7 @@ export default function DocumentUpload({ leadId, documents, onDocumentAdded, onD
     }
 
     try {
-      const response = await fetch(`${API_BASE_URL}/api/crm/documents/${docId}`, {
+      const response = await fetch(getApiPath(`/api/crm/documents/${docId}`), {
         method: 'DELETE',
         credentials: 'include',
       });

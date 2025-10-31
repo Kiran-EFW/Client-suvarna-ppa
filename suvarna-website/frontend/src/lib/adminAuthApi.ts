@@ -1,4 +1,4 @@
-const API_BASE_URL = import.meta.env.VITE_APP_BACKEND_API_URL || 'http://localhost:8000';
+import { getApiPath } from './apiConfig';
 
 export interface AdminUser {
   email: string;
@@ -6,7 +6,7 @@ export interface AdminUser {
 }
 
 export async function adminLogin(email: string, password: string): Promise<{ token: string }> {
-  const response = await fetch(`${API_BASE_URL}/api/admin/login`, {
+  const response = await fetch(getApiPath('/api/admin/login'), {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -25,7 +25,7 @@ export async function adminLogin(email: string, password: string): Promise<{ tok
 }
 
 export async function getCurrentAdmin(): Promise<AdminUser> {
-  const response = await fetch(`${API_BASE_URL}/api/admin/me`, {
+  const response = await fetch(getApiPath('/api/admin/me'), {
     credentials: 'include',
   });
 
@@ -38,7 +38,7 @@ export async function getCurrentAdmin(): Promise<AdminUser> {
 }
 
 export async function adminLogout(): Promise<void> {
-  await fetch(`${API_BASE_URL}/api/admin/logout`, {
+  await fetch(getApiPath('/api/admin/logout'), {
     method: 'POST',
     credentials: 'include',
   });

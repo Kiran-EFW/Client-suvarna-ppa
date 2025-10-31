@@ -17,7 +17,7 @@ import { Eye, Filter, Download, Search } from 'lucide-react';
 // import { getCurrentEmployee } from '@/lib/authApi';
 import { format } from 'date-fns';
 
-const API_BASE_URL = import.meta.env.VITE_APP_BACKEND_API_URL || 'http://localhost:8000';
+import { getApiPath } from '@/lib/apiConfig';
 
 interface Lead {
   id: string;
@@ -88,7 +88,7 @@ export default function TableView() {
           params.append('search', globalFilter);
         }
 
-        const response = await fetch(`${API_BASE_URL}/api/crm/leads?${params}`, {
+        const response = await fetch(getApiPath(`/api/crm/leads?${params}`), {
           credentials: 'include',
         });
 

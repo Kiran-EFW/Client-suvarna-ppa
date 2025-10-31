@@ -16,7 +16,7 @@ import {
 import { format } from 'date-fns';
 import DocumentUpload from '@/components/crm/DocumentUpload';
 
-const API_BASE_URL = import.meta.env.VITE_APP_BACKEND_API_URL || 'http://localhost:8000';
+import { getApiPath } from '@/lib/apiConfig';
 
 interface Activity {
   id: string;
@@ -138,7 +138,7 @@ export default function LeadDetail() {
   const loadLead = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`${API_BASE_URL}/api/crm/leads/${id}`, {
+      const response = await fetch(getApiPath(`/api/crm/leads/${id}`), {
         credentials: 'include'
       });
       if (response.ok) {
@@ -155,7 +155,7 @@ export default function LeadDetail() {
 
   const handleSave = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/crm/leads/${id}`, {
+      const response = await fetch(getApiPath(`/api/crm/leads/${id}`), {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -175,7 +175,7 @@ export default function LeadDetail() {
 
   const handleAddActivity = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/crm/leads/${id}/activities`, {
+      const response = await fetch(getApiPath(`/api/crm/leads/${id}/activities`), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

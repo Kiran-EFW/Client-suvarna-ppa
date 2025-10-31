@@ -11,7 +11,7 @@ import { Plus, CheckCircle, Circle, Calendar, Link as LinkIcon, Filter } from 'l
 // import { getCurrentEmployee } from '@/lib/authApi';
 import { format } from 'date-fns';
 
-const API_BASE_URL = import.meta.env.VITE_APP_BACKEND_API_URL || 'http://localhost:8000';
+import { getApiPath } from '@/lib/apiConfig';
 
 interface Task {
   id: string;
@@ -79,7 +79,7 @@ export default function Tasks() {
         params.append('priority', priorityFilter);
       }
 
-      const response = await fetch(`${API_BASE_URL}/api/crm/tasks?${params}`, {
+      const response = await fetch(getApiPath(`/api/crm/tasks?${params}`), {
         credentials: 'include',
       });
       if (response.ok) {
@@ -97,7 +97,7 @@ export default function Tasks() {
     e.preventDefault();
 
     try {
-      const response = await fetch(`${API_BASE_URL}/api/crm/tasks`, {
+      const response = await fetch(getApiPath('/api/crm/tasks'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -124,7 +124,7 @@ export default function Tasks() {
 
   const handleComplete = async (taskId: string) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/crm/tasks/${taskId}/complete`, {
+      const response = await fetch(getApiPath(`/api/crm/tasks/${taskId}/complete`), {
         method: 'PUT',
         credentials: 'include',
       });

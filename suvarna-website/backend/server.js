@@ -21,7 +21,7 @@ const PORT = process.env.PORT || 8000;
 
 // Middleware
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  origin: process.env.FRONTEND_URL || 'http://35.225.94.127',
   credentials: true
 }));
 app.use(bodyParser.json());
@@ -40,8 +40,13 @@ app.use('/api/crm', activitiesRouter);
 app.use('/api/crm', tasksRouter);
 app.use('/api/crm', documentsRouter);
 
-// Health check endpoint
+// Health check endpoint (accessible at /api/health via Nginx proxy)
 app.get('/health', (req, res) => {
+  res.json({ status: 'ok', message: 'Suvarna Capital API is running' });
+});
+
+// Also add /api/health for direct access
+app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'Suvarna Capital API is running' });
 });
 

@@ -28,7 +28,7 @@ const projectTypes = [
   { value: 'Hybrid', label: 'Hybrid (Solar + Wind)' },
 ];
 
-const API_BASE_URL = import.meta.env.VITE_APP_BACKEND_API_URL || 'http://localhost:8000';
+import { getApiPath } from '@/lib/apiConfig';
 
 export default function SellerLanding() {
   const [formData, setFormData] = useState({
@@ -68,7 +68,7 @@ export default function SellerLanding() {
     }
 
     try {
-      const response = await fetch(`${API_BASE_URL}/api/sellers/register`, {
+      const response = await fetch(getApiPath('/api/sellers/register'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Plus, Edit, Trash2, Users, UserCheck } from 'lucide-react';
 import { getCurrentEmployee } from '@/lib/authApi';
 
-const API_BASE_URL = import.meta.env.VITE_APP_BACKEND_API_URL || 'http://localhost:8000';
+import { getApiPath } from '@/lib/apiConfig';
 
 interface Employee {
   id: string;
@@ -71,7 +71,7 @@ export default function EmployeeList() {
 
   const loadEmployees = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/employees`, {
+      const response = await fetch(getApiPath('/api/employees'), {
         credentials: 'include',
       });
       if (response.ok) {
@@ -90,8 +90,8 @@ export default function EmployeeList() {
 
     try {
       const url = editingEmployee
-        ? `${API_BASE_URL}/api/employees/${editingEmployee.id}`
-        : `${API_BASE_URL}/api/employees`;
+        ? getApiPath(`/api/employees/${editingEmployee.id}`)
+        : getApiPath('/api/employees');
 
       const submitData: any = {
         firstName: formData.firstName,
@@ -162,7 +162,7 @@ export default function EmployeeList() {
     }
 
     try {
-      const response = await fetch(`${API_BASE_URL}/api/employees/${employeeId}`, {
+      const response = await fetch(getApiPath(`/api/employees/${employeeId}`), {
         method: 'DELETE',
         credentials: 'include',
       });

@@ -1,4 +1,4 @@
-const API_BASE_URL = import.meta.env.VITE_APP_BACKEND_API_URL || 'http://localhost:8000';
+import { getApiPath } from './apiConfig';
 
 export interface Seller {
   id: string;
@@ -44,7 +44,7 @@ export interface Match {
 
 // Seller Management
 export async function getSellers(): Promise<Seller[]> {
-  const response = await fetch(`${API_BASE_URL}/api/admin/sellers`, {
+  const response = await fetch(getApiPath('/api/admin/sellers'), {
     credentials: 'include',
   });
   if (!response.ok) throw new Error('Failed to fetch sellers');
@@ -53,7 +53,7 @@ export async function getSellers(): Promise<Seller[]> {
 }
 
 export async function createSeller(data: Partial<Seller>): Promise<Seller> {
-  const response = await fetch(`${API_BASE_URL}/api/admin/sellers`, {
+  const response = await fetch(getApiPath('/api/admin/sellers'), {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
@@ -65,7 +65,7 @@ export async function createSeller(data: Partial<Seller>): Promise<Seller> {
 }
 
 export async function updateSeller(id: string, data: Partial<Seller>): Promise<Seller> {
-  const response = await fetch(`${API_BASE_URL}/api/admin/sellers/${id}`, {
+  const response = await fetch(getApiPath(`/api/admin/sellers/${id}`), {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
@@ -77,7 +77,7 @@ export async function updateSeller(id: string, data: Partial<Seller>): Promise<S
 }
 
 export async function deleteSeller(id: string): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}/api/admin/sellers/${id}`, {
+  const response = await fetch(getApiPath(`/api/admin/sellers/${id}`), {
     method: 'DELETE',
     credentials: 'include',
   });
@@ -86,7 +86,7 @@ export async function deleteSeller(id: string): Promise<void> {
 
 // Buyer Management
 export async function getBuyers(): Promise<Buyer[]> {
-  const response = await fetch(`${API_BASE_URL}/api/admin/buyers`, {
+  const response = await fetch(getApiPath('/api/admin/buyers'), {
     credentials: 'include',
   });
   if (!response.ok) throw new Error('Failed to fetch buyers');
@@ -96,7 +96,7 @@ export async function getBuyers(): Promise<Buyer[]> {
 
 // Matchmaking
 export async function getMatches(): Promise<Match[]> {
-  const response = await fetch(`${API_BASE_URL}/api/admin/matches`, {
+  const response = await fetch(getApiPath('/api/admin/matches'), {
     credentials: 'include',
   });
   if (!response.ok) throw new Error('Failed to fetch matches');
@@ -105,7 +105,7 @@ export async function getMatches(): Promise<Match[]> {
 }
 
 export async function createMatch(userId: string, sellerId: string): Promise<Match> {
-  const response = await fetch(`${API_BASE_URL}/api/admin/matches`, {
+  const response = await fetch(getApiPath('/api/admin/matches'), {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
@@ -117,7 +117,7 @@ export async function createMatch(userId: string, sellerId: string): Promise<Mat
 }
 
 export async function deleteMatch(id: string): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}/api/admin/matches/${id}`, {
+  const response = await fetch(getApiPath(`/api/admin/matches/${id}`), {
     method: 'DELETE',
     credentials: 'include',
   });

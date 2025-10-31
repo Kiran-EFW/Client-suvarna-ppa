@@ -1,4 +1,11 @@
-const API_BASE_URL = import.meta.env.VITE_APP_BACKEND_API_URL || 'http://localhost:8000';
+import { getApiPath } from './apiConfig';
+
+const getApiBaseUrl = (): string => {
+  if (import.meta.env.PROD) {
+    return '';
+  }
+  return import.meta.env.VITE_APP_BACKEND_API_URL || 'http://localhost:8000';
+};
 
 export interface RegisterData {
   email: string;
@@ -57,7 +64,7 @@ export interface EmployeeAuthResponse {
 }
 
 export async function register(data: RegisterData): Promise<AuthResponse> {
-  const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
+  const response = await fetch(getApiPath('/api/auth/register'), {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -75,7 +82,7 @@ export async function register(data: RegisterData): Promise<AuthResponse> {
 }
 
 export async function login(data: LoginData): Promise<AuthResponse> {
-  const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
+  const response = await fetch(getApiPath('/api/auth/login'), {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -93,14 +100,14 @@ export async function login(data: LoginData): Promise<AuthResponse> {
 }
 
 export async function logout(): Promise<void> {
-  await fetch(`${API_BASE_URL}/api/auth/logout`, {
+  await fetch(getApiPath('/api/auth/logout'), {
     method: 'POST',
     credentials: 'include',
   });
 }
 
 export async function getCurrentUser(): Promise<User> {
-  const response = await fetch(`${API_BASE_URL}/api/auth/me`, {
+  const response = await fetch(getApiPath('/api/auth/me'), {
     method: 'GET',
     credentials: 'include',
   });
@@ -115,7 +122,7 @@ export async function getCurrentUser(): Promise<User> {
 
 // Employee authentication functions
 export async function loginEmployee(data: LoginData): Promise<EmployeeAuthResponse> {
-  const response = await fetch(`${API_BASE_URL}/api/employees/login`, {
+  const response = await fetch(getApiPath('/api/employees/login'), {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -133,7 +140,7 @@ export async function loginEmployee(data: LoginData): Promise<EmployeeAuthRespon
 }
 
 export async function getCurrentEmployee(): Promise<Employee> {
-  const response = await fetch(`${API_BASE_URL}/api/employees/me`, {
+  const response = await fetch(getApiPath('/api/employees/me'), {
     method: 'GET',
     credentials: 'include',
   });
